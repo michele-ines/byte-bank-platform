@@ -1,39 +1,85 @@
-# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
-
-# dependencies
+# =========================
+# Node / dependências
+# =========================
 node_modules/
 
-# Expo
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# Expo / Web build
+# =========================
 .expo/
 dist/
 web-build/
 expo-env.d.ts
 
-# Native
+# =========================
+# React Native (Android/iOS)
+# =========================
+# Android
+android/.gradle/
+android/.cxx/
+android/local.properties
+android/build/
+android/app/build/
+
+# iOS
+ios/build/
+ios/DerivedData/
+ios/Pods/
+
+# Chaves/artefatos sensíveis
 .kotlin/
 *.orig.*
 *.jks
+*.keystore
 *.p8
 *.p12
 *.key
 *.mobileprovision
 
+# =========================
 # Metro
+# =========================
 .metro-health-check*
 
-# debug
-npm-debug.*
-yarn-debug.*
-yarn-error.*
-
+# =========================
 # macOS
+# =========================
 .DS_Store
 *.pem
 
-# local env files
-.env*.local
+# =========================
+# Env files
+# =========================
+.env
+.env.*
+!.env.example
 
-# typescript
+# =========================
+# TypeScript
+# =========================
 *.tsbuildinfo
 
-app-example
+# =========================
+# Test coverage
+# =========================
+coverage/
+coverage-*/
+*.lcov
+lcov.info
+
+# =========================
+# Editor / IDE
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# Projetos/exemplos locais
+# =========================
+app-example/
