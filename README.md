@@ -126,6 +126,25 @@ O exemplo atual usa estado local. Se precisar de estado global/HTTP:
 - Jest está configurado do template original. Recomendado criar testes por feature em `src/features/<feature>/__tests__`.
 
 
+## Por que existem `app/` e `src/`?
+
+- **`app/`** é a pasta **especial do Expo Router**. O roteador lê o que está aqui para montar as rotas; arquivos e pastas viram URLs. Mantemos essa pasta **fina**, com `_layout.tsx` e arquivos que apenas **apontam** para as telas reais.
+- **`src/`** guarda o **código da aplicação** (features, telas, componentes, hooks, serviços e tema). Assim aplicamos **Feature-first** sem misturar regra de negócio com o roteamento.
+
+Benefícios: separação de responsabilidades, escalabilidade, organização clara por domínio e reuso das mesmas telas em diferentes rotas.
+
+### Como criar uma página nova
+1. Crie a tela em `src/features/<minha-feature>/MinhaTelaScreen.tsx`.
+2. Crie a rota em `app/<minha-rota>/index.tsx` exportando o screen:
+
+```ts
+// app/minha-rota/index.tsx
+import MinhaTela from "../../src/features/minha-feature/MinhaTelaScreen";
+export default MinhaTela;
+```
+
+3. (Opcional) adicione o link no `src/features/layout/Header.tsx` caso a página deva aparecer no menu.
+
 
 In the output, you'll find options to open the app in a
 
