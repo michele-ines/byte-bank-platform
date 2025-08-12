@@ -146,6 +146,64 @@ export default MinhaTela;
 3. (Opcional) adicione o link no `src/features/layout/Header.tsx` caso a página deva aparecer no menu.
 
 
+## Boas práticas para React Native + Expo (Feature-first com `app/` + `src/`)
+
+- **Separação de responsabilidades**: `app/` cuida do **roteamento** (Expo Router) e `src/` concentra **domínio/feature** (telas, componentes, hooks, serviços, tema).
+- **Files finos em `app/`**: cada rota exporta uma tela real de `src/features/...`. Facilita refatoração e reuso de telas.
+- **Feature-first**: tudo que pertence à mesma área do produto vive junto (`src/features/<feature>`).
+- **Testes por feature**: mantenha os testes ao lado da feature (`__tests__`), facilita manutenção.
+- **Design tokens centralizados**: estilos/cores/tipografia em `src/theme/tokens.ts`.
+- **Evolução de estado**: comece com estado local; quando crescer, crie camadas por feature (`services`, `hooks`, `types`).
+
+## Aliases de import (opcional)
+
+> Mantivemos o *package* original. Se quiser habilitar **imports curtos**, siga estes passos **opcionais**:
+
+1) Instale o plugin:
+```bash
+npm i -D babel-plugin-module-resolver
+```
+
+2) Ajuste o **`tsconfig.json`** (adição de `baseUrl` e `paths`):
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["*"],
+      "@/src/*": ["src/*"]
+    }
+  }
+}
+```
+
+3) Ajuste o **`babel.config.js`** adicionando o plugin:
+```js
+module.exports = function (api) {
+  api.cache(true);
+  return {
+    presets: ["babel-preset-expo"],
+    plugins: [
+      ["module-resolver", {
+        "root": ["./"],
+        "alias": {
+          "@": ".",
+          "@/src": "./src"
+        }
+      }]
+    ]
+  };
+};
+```
+
+4) Reinicie o Metro bundler.
+
+**Uso**:
+```ts
+import { tokens } from "@/src/theme/tokens";
+import DashboardScreen from "@/src/features/dashboard/DashboardScreen";
+```
+
 In the output, you'll find options to open the app in a
 
 - [development build](https://docs.expo.dev/develop/development-builds/introduction/)
