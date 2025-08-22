@@ -1,8 +1,9 @@
-import React from "react";
 import { Slot, usePathname } from "expo-router";
-import { View, StyleSheet, SafeAreaView } from "react-native";
-import { Header } from "../src/features/layout/Header";
+import React from "react";
+import { SafeAreaView, StyleSheet, View } from "react-native";
+import { GlobalContextProvider } from "../src/contexts";
 import { Footer } from "../src/features/layout/Footer";
+import { Header } from "../src/features/layout/Header";
 import { tokens } from "../src/theme/tokens";
 
 export default function RootLayout() {
@@ -14,13 +15,15 @@ export default function RootLayout() {
     pathname.startsWith("/outros-servicos");
 
   return (
-    <SafeAreaView style={[styles.safe, { backgroundColor: isDashboard ? tokens.byteBgDashboard : tokens.byteBgDefault }]}>
-      <Header />
-      <View style={styles.content}>
-        <Slot />
-      </View>
-      <Footer />
-    </SafeAreaView>
+    <GlobalContextProvider>
+      <SafeAreaView style={[styles.safe, { backgroundColor: isDashboard ? tokens.byteBgDashboard : tokens.byteBgDefault }]}>
+        <Header />
+        <View style={styles.content}>
+          <Slot />
+        </View>
+        <Footer />
+      </SafeAreaView>
+    </GlobalContextProvider>
   );
 }
 
