@@ -1,6 +1,7 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
 
 interface AuthContextData {
+  //ira ser implementado na etapa 4
   // user: User | null;
   // signIn: () => Promise<void>;
   // signOut: () => void;
