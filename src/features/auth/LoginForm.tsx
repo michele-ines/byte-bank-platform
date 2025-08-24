@@ -1,33 +1,43 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, Pressable, StyleSheet, Alert } from "react-native";
-import { tokens } from "../../theme/tokens";
 import { Link, router } from "expo-router";
+import React, { useState } from "react";
+import { Alert, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { tokens } from "../../theme/tokens";
+// @ts-ignore
+import LoginIllustration from '../../../assets/images/login/ilustracao-login.svg';
 
 export const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const onSubmit = () => {
+  const handleLogin = () => {
     if (!email || !password) {
       Alert.alert("Atenção", "Informe e-mail e senha.");
       return;
     }
-    // Demo only: navega pro dashboard
+
     router.replace("/dashboard");
+  };
+
+  const handleCreateAccount = () => {
+    router.push('/cadastro');
   };
 
   return (
     <View style={styles.card}>
+      <LoginIllustration width={'100%'} style={styles.illustration} />
+
       <Text style={styles.title}>Login</Text>
-      <Text style={styles.label}>E-mail</Text>
+
+      <Text style={styles.label}>Email</Text>
       <TextInput
-        placeholder="Digite seu email cadastrado"
+        placeholder="Digite seu email"
         value={email}
         onChangeText={setEmail}
         style={styles.input}
         keyboardType="email-address"
         autoCapitalize="none"
       />
+
       <Text style={styles.label}>Senha</Text>
       <TextInput
         placeholder="Digite sua senha"
@@ -37,50 +47,85 @@ export const LoginForm: React.FC = () => {
         secureTextEntry
       />
 
-      <Link href="/esqueci-senha">
-        <Text style={styles.forgot}>Esqueci a senha!</Text>
+      <Link href="/esqueci-senha" asChild>
+        <Pressable>
+            <Text style={styles.forgot}>Esqueci a senha!</Text>
+        </Pressable>
       </Link>
-
-      <Pressable onPress={onSubmit} style={styles.submit}>
-        <Text style={styles.submitText}>ACESSAR</Text>
-      </Pressable>
+      <View style={styles.alignButtons}>
+        <Pressable onPress={handleLogin} style={[styles.button, styles.submitButton]}>
+          <Text style={styles.buttonText}>Acessar</Text>
+        </Pressable>
+        
+        <Pressable onPress={handleCreateAccount} style={[styles.button, styles.createButton]}>
+          <Text style={[styles.buttonText]}>Criar conta</Text>
+        </Pressable>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
-    width: "100%",
-    maxWidth: 720,
-    marginHorizontal: "auto",
-    backgroundColor: "#fff",
-    borderRadius: 12,
-    padding: 20,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
-    elevation: 3,
-    gap: 8,
+    flex: 1, // Usa flex: 1 para ocupar todo o espaço do container pai
+    justifyContent: "center", // Centraliza o conteúdo (inputs, botões, etc.) verticalmente
+    backgroundColor: tokens.byteColorGreen100,
+    paddingHorizontal: 24, // Adiciona o espaçamento apenas nas laterais
+    gap: 12,
   },
-  title: { fontSize: 20, fontWeight: "700", textAlign: "center", marginBottom: 8 },
-  label: { fontSize: 14, fontWeight: "600", color: tokens.byteGray800 },
+  illustration: {
+    width: '100%',
+    marginBottom: 16,
+  },
+  title: { 
+    fontSize: 24, 
+    fontWeight: "bold", 
+    textAlign: "center", 
+    marginBottom: 16,
+    color: tokens.byteGray800,
+  },
+  label: { 
+    fontSize: 16, 
+    fontWeight:"bold", 
+    color: tokens.byteGray800,
+    marginBottom: -4,
+  },
   input: {
     borderWidth: 1,
     borderColor: tokens.byteGray200,
     borderRadius: 8,
-    paddingHorizontal: 12,
+    paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 16,
     backgroundColor: tokens.byteColorGreen100,
   },
-  forgot: { color: tokens.byteColorDash, marginTop: 6, textAlign: "right" },
-  submit: {
-    marginTop: 12,
-    backgroundColor: tokens.byteColorGreen500,
-    paddingVertical: 12,
+  forgot: { 
+    color: tokens.byteColorGreen500,
+    textAlign: "left",
+    fontWeight: '600',
+    marginTop: 4,
+    marginBottom: 16,
+    textDecorationLine: 'underline'
+  },
+  button: {
+    width:144,
+    paddingVertical: 14,
     borderRadius: 8,
     alignItems: "center",
+    marginTop: 8,
   },
-  submitText: { color: "#fff", fontWeight: "700" },
+  alignButtons:{
+    alignItems:'center'
+  },
+  submitButton: {
+    backgroundColor: tokens.byteColorGreen500,
+  },
+  createButton: {
+    backgroundColor: tokens.byteColorOrange500,
+  },
+  buttonText: { 
+    color: "#fff", 
+    fontWeight: "bold",
+    fontSize: 16,
+  },
 });

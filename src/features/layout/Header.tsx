@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: tokens.byteColorDash, // Cor de fundo para o dashboard
-    gap: 20, // Espaço entre o ícone e o logo
+    backgroundColor: tokens.byteColorDash,
+    gap: 20, 
   },
   logo: {
     color: tokens.byteColorGreen500,
