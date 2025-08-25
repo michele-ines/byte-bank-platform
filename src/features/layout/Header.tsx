@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: tokens.byteColorDash, 
+    backgroundColor: tokens.byteColorDash,
     gap: 20, 
   },
   logo: {

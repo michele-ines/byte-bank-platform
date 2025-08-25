@@ -1,9 +1,11 @@
+import { CustomDrawerContent } from "@/src/features/layout/CustomDrawerContent";
 import { Drawer } from "expo-router/drawer";
 import { Platform } from "react-native";
 
 export default function AppLayout() {
   return (
     <Drawer
+    drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
           headerShown: true,
           drawerType: Platform.OS === "web" ? "front" : "slide", 
