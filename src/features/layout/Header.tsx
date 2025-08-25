@@ -8,7 +8,6 @@ import { tokens } from "../../theme/tokens";
 export const Header: React.FC = () => {
   const navigation = useNavigation();
 
-  // Função para abrir o drawer
   const openDrawer = () => {
     navigation.dispatch(DrawerActions.openDrawer());
   };
