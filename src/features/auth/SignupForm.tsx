@@ -1,8 +1,9 @@
 import { router } from "expo-router";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { Alert, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { auth } from "../../config/firebaseConfig";
 import { tokens } from "../../theme/tokens";
-
 // @ts-ignore
 import SignupIllustration from '../../../assets/images/cadastro/ilustracao-cadastro.svg';
 // @ts-ignore
@@ -27,7 +28,7 @@ export const SignupForm: React.FC = () => {
     setEmail(text);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!name || !email || !password || !confirmPassword) {
       Alert.alert("Atenção", "Por favor, preencha todos os campos.");
       return;
@@ -44,9 +45,21 @@ export const SignupForm: React.FC = () => {
       Alert.alert("Atenção", "Por favor, corrija o email antes de continuar.");
       return;
     }
-    
+
     Alert.alert("Sucesso!", "Conta criada com sucesso. Agora você pode fazer o login.");
-    router.push('/'); // Redireciona para a tela de login
+    router.push('/');
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      Alert.alert("Sucesso!", "Conta criada. Você será redirecionado para o login.");
+      router.push('/');
+    } catch (error: any) {
+      console.error(error);
+      if (error.code === 'auth/email-already-in-use') {
+        Alert.alert("Erro", "Este e-mail já está em uso.");
+      } else {
+        Alert.alert("Erro", "Ocorreu um erro ao criar a conta.");
+      }
+    }
   };
 
   return (
@@ -103,7 +116,7 @@ export const SignupForm: React.FC = () => {
           Li e estou ciente quanto às condições de tratamento dos meus dados conforme descrito na Política de Privacidade do banco.
         </Text>
       </View>
-      
+
       <Pressable onPress={handleSubmit} style={[styles.button, styles.submitButton]}>
         <Text style={styles.buttonText}>Criar conta</Text>
       </Pressable>
@@ -123,17 +136,17 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: 24,
   },
-  title: { 
-    fontSize: 20, 
-    fontWeight: "bold", 
-    textAlign: "center", 
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
     marginBottom: 16,
     color: tokens.byteGray800,
     lineHeight: 28,
   },
-  label: { 
-    fontSize: 16, 
-    fontWeight:"bold", 
+  label: {
+    fontSize: 16,
+    fontWeight: "bold",
     color: tokens.byteGray800,
     marginBottom: -4,
   },
@@ -175,8 +188,8 @@ const styles = StyleSheet.create({
   submitButton: {
     backgroundColor: tokens.byteColorOrange500,
   },
-  buttonText: { 
-    color: "#fff", 
+  buttonText: {
+    color: "#fff",
     fontWeight: "bold",
     fontSize: 16,
   },
