@@ -1,22 +1,34 @@
 import { Link, router } from "expo-router";
+
+import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { Alert, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { auth } from "../../config/firebaseConfig";
 import { tokens } from "../../theme/tokens";
 // @ts-ignore
 import LoginIllustration from '../../../assets/images/login/ilustracao-login.svg';
 
 export const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [password] = useState("");
 
-  const handleLogin = () => {
+
+ const handleLogin = async () => {
     if (!email || !password) {
-      Alert.alert("Atenção", "Informe e-mail e senha.");
+      Alert.alert("Atenção", "Informe e-mail e senha."); 
       return;
     }
-
-    router.replace("/dashboard");
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      // O onAuthStateChanged no AuthContext irá detetar a mudança
+      // e o layout (app) irá redirecionar automaticamente.
+      router.replace("/dashboard");
+    } catch (error: any) {
+      console.error(error);
+      Alert.alert("Erro de Login", "Email ou senha inválidos.");
+    }
   };
+
 
   const handleCreateAccount = () => {
     router.push('/cadastro');
@@ -53,7 +65,6 @@ export const LoginForm: React.FC = () => {
         <Pressable onPress={handleLogin} style={[styles.button, styles.submitButton]}>
           <Text style={styles.buttonText}>Acessar</Text>
         </Pressable>
-
         <Pressable onPress={handleCreateAccount} style={[styles.button, styles.createButton]}>
           <Text style={[styles.buttonText]}>Criar conta</Text>
         </Pressable>
@@ -64,10 +75,10 @@ export const LoginForm: React.FC = () => {
 
 const styles = StyleSheet.create({
   card: {
-    flex: 1, // Usa flex: 1 para ocupar todo o espaço do container pai
-    justifyContent: "center", // Centraliza o conteúdo (inputs, botões, etc.) verticalmente
+    flex: 1, 
+    justifyContent: "center", 
     backgroundColor: tokens.byteColorGreen100,
-    paddingHorizontal: 24, // Adiciona o espaçamento apenas nas laterais
+    paddingHorizontal: 24, 
     gap: 12,
   },
   illustration: {

@@ -1,27 +1,22 @@
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
-import { router } from 'expo-router';
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useAuth } from '../../contexts/AuthContext';
 import { tokens } from '../../theme/tokens';
 
-
 export function CustomDrawerContent(props: any) {
+  const { signOut } = useAuth();
+
   const handleLogout = () => {
-    router.replace('/'); 
+    signOut(); 
   };
 
-
   return (
-    <View style={{ flex: 1 }}>
-      <DrawerContentScrollView {...props} contentContainerStyle={{ paddingTop: 0 }}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Bytebank</Text>
-        </View>
-
-
+    <View style={{ flex: 1, backgroundColor: tokens.byteColorDash }}>
+      <DrawerContentScrollView {...props}>
+        {/* Removemos o header que estava aqui */}
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
-
 
       <View style={styles.footer}>
         <Pressable onPress={handleLogout} style={styles.logoutButton}>
@@ -32,18 +27,7 @@ export function CustomDrawerContent(props: any) {
   );
 }
 
-
 const styles = StyleSheet.create({
-  header: {
-    padding: 20,
-    paddingTop: 50,
-    backgroundColor: tokens.byteColorDash,
-  },
-  headerText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
   footer: {
     padding: 20,
     borderTopWidth: 1,
@@ -53,9 +37,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   logoutButtonText: {
-
     fontSize: 16,
-
     color: tokens.byteGray100,
   },
 });
