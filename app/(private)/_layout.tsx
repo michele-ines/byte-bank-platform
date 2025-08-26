@@ -2,9 +2,9 @@ import { Redirect } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
 import { ActivityIndicator, View } from 'react-native';
 import 'react-native-gesture-handler';
+import { CustomDrawerContent } from '../../src/components/CustomDrawerContent/CustomDrawerContent';
 import { useAuth } from '../../src/contexts/AuthContext';
-import { CustomDrawerContent } from '../../src/features/layout/CustomDrawerContent';
-import { Header } from '../../src/features/layout/Header';
+import { Header } from '../../src/shared/Header/Header';
 import { tokens } from '../../src/theme/tokens';
 
 export default function AppLayout() {

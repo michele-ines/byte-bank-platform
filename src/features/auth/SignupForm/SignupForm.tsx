@@ -1,24 +1,36 @@
+import { auth } from "@/src/config/firebaseConfig";
+import { tokens } from "@/src/theme/tokens";
 import ExpoCheckbox from "expo-checkbox";
 import { router } from "expo-router";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
-import { Alert, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
-import SignupIllustration from '../../../assets/images/cadastro/ilustracao-cadastro.svg';
-import { auth } from "../../config/firebaseConfig";
-import { tokens } from "../../theme/tokens";
+import {
+  Alert,
+  NativeSyntheticEvent,
+  Pressable,
+  Text,
+  TextInput,
+  TextInputChangeEventData,
+  View,
+} from "react-native";
 
+import SignupIllustration from "@/assets/images/cadastro/ilustracao-cadastro.svg";
+import { styles } from "./SignupForm.styles";
 
+type SignupFormProps = {
+  /** Callback opcional após cadastro com sucesso */
+  onSignupSuccess?: (email: string) => void;
+};
 
-export const SignupForm: React.FC = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [isChecked, setChecked] = useState(false);
-  const [emailError, setEmailError] = useState("");
+export const SignupForm: React.FC<SignupFormProps> = ({ onSignupSuccess }) => {
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [isChecked, setChecked] = useState<boolean>(false);
+  const [emailError, setEmailError] = useState<string>("");
 
   const validateEmail = (text: string) => {
-    // Expressão regular simples para validação de email
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!regex.test(text) && text.length > 0) {
       setEmailError("Dado incorreto. Revise e digite novamente.");
@@ -26,6 +38,14 @@ export const SignupForm: React.FC = () => {
       setEmailError("");
     }
     setEmail(text);
+  };
+
+  const handlePasswordChange = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+    setPassword(e.nativeEvent.text);
+  };
+
+  const handleConfirmPasswordChange = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+    setConfirmPassword(e.nativeEvent.text);
   };
 
   const handleSubmit = async () => {
@@ -46,15 +66,14 @@ export const SignupForm: React.FC = () => {
       return;
     }
 
-    Alert.alert("Sucesso!", "Conta criada com sucesso. Agora você pode fazer o login.");
-    router.push('/');
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+      onSignupSuccess?.(email);
       Alert.alert("Sucesso!", "Conta criada. Você será redirecionado para o login.");
-      router.push('/');
+      router.push("/");
     } catch (error: any) {
       console.error(error);
-      if (error.code === 'auth/email-already-in-use') {
+      if (error.code === "auth/email-already-in-use") {
         Alert.alert("Erro", "Este e-mail já está em uso.");
       } else {
         Alert.alert("Erro", "Ocorreu um erro ao criar a conta.");
@@ -64,12 +83,16 @@ export const SignupForm: React.FC = () => {
 
   return (
     <View style={styles.card}>
-      <SignupIllustration width={'100%'} height={150} style={styles.illustration} />
+      <SignupIllustration width={"100%"} height={150} style={styles.illustration} />
 
-      <Text style={styles.title}>Preencha os campos abaixo para criar sua conta corrente!</Text>
+      <Text style={styles.title}>
+        Preencha os campos abaixo para criar sua conta corrente!
+      </Text>
 
       <Text style={styles.label}>Nome</Text>
       <TextInput
+        placeholder="Digite seu nome"
+        value={name}
         onChangeText={setName}
         style={styles.input}
       />
@@ -82,6 +105,7 @@ export const SignupForm: React.FC = () => {
         style={[styles.input, emailError ? styles.inputError : null]}
         keyboardType="email-address"
         autoCapitalize="none"
+        textContentType="emailAddress"
       />
       {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
 
@@ -89,7 +113,7 @@ export const SignupForm: React.FC = () => {
       <TextInput
         placeholder="Digite sua senha"
         value={password}
-        onChangeText={setPassword}
+        onChange={handlePasswordChange}
         style={styles.input}
         secureTextEntry
       />
@@ -98,7 +122,7 @@ export const SignupForm: React.FC = () => {
       <TextInput
         placeholder="Confirme sua senha"
         value={confirmPassword}
-        onChangeText={setConfirmPassword}
+        onChange={handleConfirmPasswordChange}
         style={styles.input}
         secureTextEntry
       />
@@ -111,7 +135,8 @@ export const SignupForm: React.FC = () => {
           color={isChecked ? tokens.byteColorGreen500 : undefined}
         />
         <Text style={styles.checkboxLabel}>
-          Li e estou ciente quanto às condições de tratamento dos meus dados conforme descrito na Política de Privacidade do banco.
+          Li e estou ciente quanto às condições de tratamento dos meus dados conforme descrito
+          na Política de Privacidade do banco.
         </Text>
       </View>
 
@@ -121,74 +146,3 @@ export const SignupForm: React.FC = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    flex: 1,
-    justifyContent: "center",
-    backgroundColor: '#fff',
-    padding: 24,
-    gap: 12,
-  },
-  illustration: {
-    alignSelf: 'center',
-    marginBottom: 24,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 16,
-    color: tokens.byteGray800,
-    lineHeight: 28,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: tokens.byteGray800,
-    marginBottom: -4,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: tokens.byteGray200,
-    borderRadius: 8,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    fontSize: 16,
-    backgroundColor: tokens.byteColorGreen100,
-  },
-  inputError: {
-    borderColor: tokens.byteColorError,
-  },
-  errorText: {
-    color: tokens.byteColorError,
-    fontSize: 12,
-    marginTop: 4,
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 16,
-  },
-  checkbox: {
-    marginRight: 12,
-  },
-  checkboxLabel: {
-    flex: 1,
-    color: tokens.byteTextMediumGray,
-  },
-  button: {
-    paddingVertical: 14,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 8,
-  },
-  submitButton: {
-    backgroundColor: tokens.byteColorOrange500,
-  },
-  buttonText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-});
