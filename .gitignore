@@ -83,3 +83,9 @@ lcov.info
 # Projetos/exemplos locais
 # =========================
 app-example/
+
+
+# =========================
+# config firebase
+# =========================
+src/config/firebaseConfig.ts

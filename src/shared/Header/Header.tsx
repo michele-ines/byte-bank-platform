@@ -2,7 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import { DrawerActions } from "@react-navigation/native";
 import { useNavigation } from "expo-router";
 import React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import { tokens } from "../../theme/tokens";
 
 export const Header: React.FC = () => {
@@ -27,14 +27,15 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 16,
     paddingVertical: 20,
+    paddingTop: Platform.OS === 'android' ? 50 : 40, 
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: tokens.byteColorDash, 
-    gap: 20, 
+    backgroundColor: tokens.byteColorDash,
+    gap: 20,
   },
   logo: {
     color: tokens.byteColorGreen500,
     fontSize: 20,
     fontWeight: "700",
   },
-});
+})
