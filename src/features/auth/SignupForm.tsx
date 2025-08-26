@@ -1,16 +1,13 @@
+import ExpoCheckbox from "expo-checkbox";
 import { router } from "expo-router";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { Alert, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import SignupIllustration from '../../../assets/images/cadastro/ilustracao-cadastro.svg';
 import { auth } from "../../config/firebaseConfig";
 import { tokens } from "../../theme/tokens";
-// @ts-ignore
-import SignupIllustration from '../../../assets/images/cadastro/ilustracao-cadastro.svg';
-// @ts-ignore
-import Checkbox from 'expo-checkbox';
 
-// @ts-ignore
-// @ts-ignore
+
 
 export const SignupForm: React.FC = () => {
   const [name, setName] = useState("");
@@ -107,7 +104,7 @@ export const SignupForm: React.FC = () => {
       />
 
       <View style={styles.checkboxContainer}>
-        <Checkbox
+        <ExpoCheckbox
           style={styles.checkbox}
           value={isChecked}
           onValueChange={setChecked}
