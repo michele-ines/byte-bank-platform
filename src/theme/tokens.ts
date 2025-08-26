@@ -40,6 +40,7 @@ export const tokens = {
   // 🖋️ Tipografia
   fontInter: "Inter, System",
 
+  textXxs: 13,
   textXs: 14,
   textSm: 16,
   textBase: 18,
