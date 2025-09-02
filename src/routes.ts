@@ -8,5 +8,5 @@ export const routes = {
   investments: "/(private)/investments" as Href,
   meusCartoes: "/(private)/meus-cartoes" as Href,
   outrosServicos: "/(private)/outros-servicos" as Href,
-  
+  minhaConta: "/(private)/minha-conta" as Href,
 };
