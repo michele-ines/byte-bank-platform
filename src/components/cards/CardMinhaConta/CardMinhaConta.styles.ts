@@ -22,7 +22,7 @@ export const styles = StyleSheet.create<CardMinhaContaStyles>({
     marginBottom: 20,
   },
   field: {
-    marginBottom: 20,
+    marginBottom: 10,
   },
   label: {
     fontFamily: "Inter",

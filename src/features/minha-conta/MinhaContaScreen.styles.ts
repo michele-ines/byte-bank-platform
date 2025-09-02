@@ -14,6 +14,7 @@ export const styles = StyleSheet.create<MinhaContaStyles>({
     flex: 1,
     backgroundColor: tokens.byteBgDashboard,
     padding: 16,
+    paddingVertical: 54,
     justifyContent: "center",
   },
   cardContainer: {
@@ -25,6 +26,7 @@ export const styles = StyleSheet.create<MinhaContaStyles>({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 30,
+    maxHeight: 220,
     zIndex: 1,
   },
   pixelTop: {

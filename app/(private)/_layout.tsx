@@ -22,6 +22,7 @@ const drawerIcons = {
   cards: "credit-card",
   invest: "trending-up",
   services: "apps",
+  account: "person",
   logout: "logout",
 } as const;
 
@@ -93,13 +94,13 @@ export default function AppLayout(): JSX.Element {
         <Drawer.Screen
           name="meus-cartoes"
           options={{
-            drawerLabel: "Meus Cartões",
+            drawerLabel: "Meus cartões",
             drawerIcon: ({ color, size }) => (
               <MaterialIcons
                 name={drawerIcons.cards}
                 size={size}
                 color={color}
-                accessibilityLabel="Abrir seção Meus Cartões"
+                accessibilityLabel="Abrir seção meus cartões"
               />
             ),
           }}
@@ -113,7 +114,7 @@ export default function AppLayout(): JSX.Element {
                 name={drawerIcons.invest}
                 size={size}
                 color={color}
-                accessibilityLabel="Abrir seção Investimentos"
+                accessibilityLabel="Abrir seção investimentos"
               />
             ),
           }}
@@ -121,13 +122,27 @@ export default function AppLayout(): JSX.Element {
         <Drawer.Screen
           name="outros-servicos"
           options={{
-            drawerLabel: "Outros Serviços",
+            drawerLabel: "Outros serviços",
             drawerIcon: ({ color, size }) => (
               <MaterialIcons
                 name={drawerIcons.services}
                 size={size}
                 color={color}
-                accessibilityLabel="Abrir seção Outros Serviços"
+                accessibilityLabel="Abrir seção outros serviços"
+              />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="minha-conta"
+          options={{
+            drawerLabel: "Minha conta",
+            drawerIcon: ({ color, size }) => (
+              <MaterialIcons
+                name={drawerIcons.account}
+                size={size}
+                color={color}
+                accessibilityLabel="Abrir seção minha conta"
               />
             ),
           }}
