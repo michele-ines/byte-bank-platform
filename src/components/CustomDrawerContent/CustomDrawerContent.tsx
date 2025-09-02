@@ -1,28 +1,75 @@
-import { DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
+import { useAuth } from "@/src/contexts/AuthContext";
+import {
+  DrawerContentComponentProps,
+  DrawerContentScrollView,
+  DrawerItemList,
+} from "@react-navigation/drawer";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
-import { useAuth } from "../../contexts/AuthContext";
-import { tokens } from "../../theme/tokens";
 import { styles } from "./CustomDrawerContent.styles";
 
-export function CustomDrawerContent(props: any) {
-  const { signOut } = useAuth();
+type CustomDrawerContentProps = DrawerContentComponentProps;
 
-  const handleLogout = () => {
+export function CustomDrawerContent(props: CustomDrawerContentProps) {
+  const { user, userData, signOut } = useAuth();
+
+  const handleLogout = (): void => {
     signOut();
   };
 
-  return (
-    <View style={{ flex: 1, backgroundColor: tokens.byteColorDash }}>
-      <DrawerContentScrollView {...props}>
-        <DrawerItemList {...props} />
-      </DrawerContentScrollView>
+  const displayName =
+    userData?.name ?? user?.displayName ?? user?.email?.split("@")[0] ?? "Usuário";
 
-      <View style={styles.footer}>
-        <Pressable onPress={handleLogout} style={styles.logoutButton}>
+  const email = userData?.email ?? user?.email ?? "sem-email";
+
+  const initials = displayName
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase();
+
+  return (
+    <View style={styles.container}>
+      <View
+        style={styles.header}
+        accessible
+        accessibilityRole="header"
+        accessibilityLabel="Informações do usuário"
+      >
+        <View
+          style={styles.avatarCircle}
+          accessible
+          accessibilityRole="image"
+          accessibilityLabel={`Avatar de ${displayName}`}
+        >
+          <Text style={styles.avatarText}>{initials}</Text>
+        </View>
+
+        <Text style={styles.userName}>{displayName}</Text>
+        <Text style={styles.userEmail}>{email}</Text>
+      </View>
+
+      <DrawerContentScrollView
+        {...props}
+        contentContainerStyle={styles.scrollContent}
+        accessible
+        accessibilityLabel="Menu de navegação"
+      >
+        <DrawerItemList {...props} />
+
+        <Pressable
+          onPress={handleLogout}
+          style={({ pressed }) => [
+            styles.logoutButton,
+            pressed && { opacity: 0.7 },
+          ]}
+          accessibilityRole="button"
+          accessibilityLabel="Sair da conta"
+          accessibilityHint="Finaliza a sessão e retorna para a tela inicial"
+        >
           <Text style={styles.logoutButtonText}>Sair</Text>
         </Pressable>
-      </View>
+      </DrawerContentScrollView>
     </View>
   );
 }
