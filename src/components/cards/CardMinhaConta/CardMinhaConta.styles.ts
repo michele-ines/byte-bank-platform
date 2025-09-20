@@ -8,10 +8,7 @@ type CardMinhaContaStyles = {
   inputWrapper: ViewStyle;
   input: TextStyle;
   inputEditing: ViewStyle;
-  saveButton: ViewStyle;
-  saveButtonText: TextStyle;
 };
-
 export const styles = StyleSheet.create<CardMinhaContaStyles>({
   title: {
     fontFamily: "Inter",
@@ -48,17 +45,5 @@ export const styles = StyleSheet.create<CardMinhaContaStyles>({
   },
   inputEditing: {
     borderColor: tokens.byteColorGreen500,
-  },
-  saveButton: {
-    backgroundColor: tokens.byteColorOrange500,
-    paddingVertical: 14,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 20,
-  },
-  saveButtonText: {
-    color: tokens.byteBgDefault,
-    fontSize: 16,
-    fontWeight: "600",
   },
 });

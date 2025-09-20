@@ -6,6 +6,7 @@ export const tokens = {
   byteBgDashboard: "#e4ede3",
   byteTextMediumGray: "#767676",
   byteColorBlack: "#000000",
+  byteColorOverlay: "rgba(0,0,0,0.5)",
   byteColorDash: "#004d61",
   byteColorNeutral600: "#8b8b8b",
   byteColorGreen50: "rgba(71, 161, 56, 0.5)",
@@ -183,8 +184,7 @@ export const tokens = {
   textMetaEconomia: "Meta de economia",
   textDescricaoGastos:
     "Monitore seus gastos mensais e receba alertas quando se aproximar do limite definido.",
-  textDescricaoEconomia:
-    "Defina metas de economia e acompanhe seu progresso.",
+  textDescricaoEconomia: "Defina metas de economia e acompanhe seu progresso.",
   textPreviewWidget: "Prévia do widget",
   textPreviewGastos:
     "Visualize seus gastos em tempo real e receba alertas quando atingir 80% do limite.",
@@ -292,7 +292,10 @@ export const tokens = {
   newTransactionForm: {
     title: "Nova transação",
     labels: { transactionType: "Tipo de transação", amount: "Valor" },
-    placeholders: { transactionType: "Selecione o tipo de transação", amount: "R$ 0,00" },
+    placeholders: {
+      transactionType: "Selecione o tipo de transação",
+      amount: "R$ 0,00",
+    },
     buttons: { submit: "CONCLUIR TRANSAÇÃO" },
     accessibility: {
       form: "Formulário de nova transação",
@@ -308,9 +311,18 @@ export const tokens = {
       loading: "Carregando transação",
     },
     toasts: {
-      emptyFields: { title: "Atenção", message: "Selecione o tipo e informe o valor." },
-      success: { title: "Sucesso!", message: "Transação adicionada com sucesso." },
-      error: { title: "Erro", message: "Não foi possível adicionar a transação." },
+      emptyFields: {
+        title: "Atenção",
+        message: "Selecione o tipo e informe o valor.",
+      },
+      success: {
+        title: "Sucesso!",
+        message: "Transação adicionada com sucesso.",
+      },
+      error: {
+        title: "Erro",
+        message: "Não foi possível adicionar a transação.",
+      },
     },
   },
 
