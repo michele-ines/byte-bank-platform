@@ -27,14 +27,26 @@ export const formTexts = {
         title: "Erro",
         message: "Não foi possível atualizar o e-mail.",
       },
+      emailInUse: {
+        title: "Erro",
+        message: "Este e-mail já está em uso por outra conta.",
+      },
+      invalidEmail: {
+        title: "Erro",
+        message: "O e-mail informado não é válido.",
+      },
       password: {
         title: "Erro",
         message: "Não foi possível alterar a senha.",
       },
+      reauthWrongPassword: {
+        title: "Senha incorreta",
+        message: "Senha atual incorreta. Tente novamente.",
+      },
       reauth: {
-        title: "Reautenticação necessária",
+        title: "Senha necessária",
         message:
-          "Por questões de segurança, é necessário que faça login novamente.",
+          "Por questões de segurança, é necessário que digite sua senha atual.",
       },
       generic: {
         title: "Erro",

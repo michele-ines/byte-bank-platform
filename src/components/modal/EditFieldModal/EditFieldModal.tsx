@@ -3,6 +3,7 @@ import { formTexts } from "@/src/constants/CardMinhaConta";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { showToast } from "@/src/utils/toast";
 import { MaterialIcons } from "@expo/vector-icons";
+import { FirebaseError } from "firebase/app";
 import {
   EmailAuthProvider,
   reauthenticateWithCredential,
@@ -82,14 +83,44 @@ export function EditFieldModal({
       );
     }
   };
-
   const reauthenticate = async () => {
-    if (!user?.email) return;
-    const credential = EmailAuthProvider.credential(
-      user.email,
-      currentPassword
-    );
-    await reauthenticateWithCredential(user, credential);
+    if (!user?.email) {
+      showToast(
+        "error",
+        formTexts.toasts.error.reauth.title,
+        formTexts.toasts.error.reauth.message
+      );
+      throw new Error(formTexts.toasts.error.reauth.message);
+    }
+
+    if (!currentPassword) {
+      showToast(
+        "error",
+        formTexts.toasts.error.reauth.title,
+        formTexts.toasts.error.reauth.message
+      );
+      throw new Error(formTexts.toasts.error.reauth.message);
+    }
+
+    try {
+      const credential = EmailAuthProvider.credential(
+        user.email,
+        currentPassword
+      );
+      await reauthenticateWithCredential(user, credential);
+    } catch (error) {
+      let message = formTexts.toasts.error.password.message;
+      let title = formTexts.toasts.error.password.title;
+
+      if (error instanceof FirebaseError) {
+        if (error.code === "auth/wrong-password") {
+          title = formTexts.toasts.error.reauthWrongPassword.title;
+          message = formTexts.toasts.error.reauthWrongPassword.message;
+        }
+
+        showToast("error", title, message);
+      }
+    }
   };
 
   const updateName = async (name: string) => {
@@ -102,6 +133,7 @@ export function EditFieldModal({
         formTexts.toasts.success.name.title,
         formTexts.toasts.success.name.message
       );
+      onClose();
     } catch (error) {
       const message =
         error instanceof Error
@@ -113,8 +145,18 @@ export function EditFieldModal({
 
   const updateEmail = async (email: string) => {
     if (!user) return;
-    await reauthenticate();
+
+    if (!currentPassword) {
+      showToast(
+        "error",
+        formTexts.toasts.error.reauth.title,
+        formTexts.toasts.error.reauth.message
+      );
+      return;
+    }
+
     try {
+      await reauthenticate();
       await verifyBeforeUpdateEmail(user, email);
       await updateUserDataInFirestore(undefined, email);
       showToast(
@@ -122,31 +164,60 @@ export function EditFieldModal({
         formTexts.toasts.success.email.title,
         formTexts.toasts.success.email.message
       );
+      onClose();
     } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : formTexts.toasts.error.email.message;
+      let message = formTexts.toasts.error.email.message;
+
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case "auth/email-already-in-use":
+            message = formTexts.toasts.error.emailInUse.message;
+            break;
+          case "auth/invalid-email":
+            message = formTexts.toasts.error.invalidEmail.message;
+            break;
+        }
+      }
       showToast("error", formTexts.toasts.error.email.title, message);
     }
   };
 
   const updateUserPassword = async (password: string) => {
     if (!user) return;
-    await reauthenticate();
+
+    if (!currentPassword) {
+      showToast(
+        "error",
+        formTexts.toasts.error.reauth.title,
+        formTexts.toasts.error.reauth.message
+      );
+      return;
+    }
     try {
+      await reauthenticate();
       await updatePassword(user, password);
       showToast(
         "success",
         formTexts.toasts.success.password.title,
         formTexts.toasts.success.password.message
       );
+      onClose();
     } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : formTexts.toasts.error.password.message;
-      showToast("error", formTexts.toasts.error.password.title, message);
+      let message = formTexts.toasts.error.password.message;
+      let title = formTexts.toasts.error.password.title;
+
+      if (error instanceof Error) {
+        if (error.message.includes("auth/wrong-password")) {
+          title = formTexts.toasts.error.reauth.title;
+          message = formTexts.toasts.error.reauth.message;
+        } else if (error.message.includes("auth/weak-password")) {
+          message = "A nova senha é muito fraca. Tente uma mais segura.";
+        } else {
+          message = error.message;
+        }
+      }
+
+      showToast("error", title, message);
     }
   };
 
@@ -157,8 +228,6 @@ export function EditFieldModal({
       if (field === "name") await updateName(value);
       if (field === "email") await updateEmail(value);
       if (isPasswordField) await updateUserPassword(value);
-
-      onClose();
     } finally {
       setLoading(false);
     }
@@ -175,7 +244,7 @@ export function EditFieldModal({
       <MaterialIcons
         name={visible ? "visibility-off" : "visibility"}
         size={22}
-        color="#666"
+        color={styles.input.color}
       />
     </TouchableOpacity>
   );
