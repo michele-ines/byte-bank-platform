@@ -8,6 +8,7 @@ export const tokens = {
   byteColorBlack: "#000000",
   byteColorOverlay: "rgba(0,0,0,0.5)",
   byteColorDash: "#004d61",
+  byteColorDash2: "#0a4956",
   byteColorNeutral600: "#8b8b8b",
   byteColorGreen50: "rgba(71, 161, 56, 0.5)",
 
@@ -18,6 +19,7 @@ export const tokens = {
   byteColorOrange300: "#f1823d",
   byteColorGreen500: "#47a138",
   byteColorGreen100: "#f8f8f8",
+  byteColorBlue100: "#b6dde5",
   byteColorBlue500: "#2567f9",
   byteColorPurple500: "#8f3cff",
   byteColorMagenta500: "#ff3c82",
@@ -26,11 +28,16 @@ export const tokens = {
 
   // ⚪ Escala de Cinza
   byteGray50: "#f9fafb",
+
   byteGray100: "#f3f4f6",
   byteGray200: "#e5e7eb",
+  
   byteGray300: "#d1d5db",
+  byteGray350: "#aaa",
   byteGray400: "#9ca3af",
+  byteGray450: "#777",
   byteGray500: "#6b7280",
+
   byteGray600: "#4b5563",
   byteGray700: "#374151",
   byteGray800: "#1f2937",
@@ -54,6 +61,7 @@ export const tokens = {
   fontMedium: "500" as const,
   fontSemibold: "600" as const,
   fontBold: "700" as const,
+  fontExtraBold: "800" as const,
   lineHeightTight: 16,
   lineHeightNormal: 20,
   lineHeightRelaxed: 24,
@@ -63,6 +71,7 @@ export const tokens = {
   radiusSm: 8,
   radiusMd: 12,
   radiusLg: 16,
+  radiusX: 70,
   radiusXl: 999,
 
   // 👤 Avatar
@@ -73,6 +82,7 @@ export const tokens = {
   // 📏 Spacing
   spacing2Xs: 4,
   spacingXs: 8,
+  spacing2Sm: 10,
   spacingSm: 12,
   spacingMd: 16,
   spacingMl: 20,
@@ -94,6 +104,7 @@ export const tokens = {
   height80: 80,
   height50: 50,
   height2: 2,
+  height12: 12,
   minHeight: 220,
   heightModalMax: "85%" as DimensionValue,
   height50Percent: "50%" as DimensionValue,
@@ -106,6 +117,8 @@ export const tokens = {
   width220: 220,
   width150: 150,
   width0: 0,
+  width12: 12,
+  width20: 20,
 
   // 📐 Layout & Dimensões
   flex1: 1,
